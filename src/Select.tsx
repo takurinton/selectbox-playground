@@ -13,10 +13,10 @@ import { Menu } from "./Menu";
 import { OptionType } from "./types";
 
 type SelectProps = {
-  defaultValue?: OptionType | OptionType[];
+  defaultValue?: OptionType;
   isMulti?: false;
   name?: string;
-  selected: OptionType;
+  selected?: OptionType;
   options: OptionType[];
   isDisabled?: boolean;
 };
@@ -25,7 +25,7 @@ type MultiSelectProps = {
   defaultValue?: OptionType[];
   isMulti: true;
   name?: string;
-  selected: OptionType[];
+  selected?: OptionType[];
   options: OptionType[];
   isDisabled?: boolean;
 };
