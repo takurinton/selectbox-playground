@@ -19,6 +19,7 @@ type SelectProps = {
   selected?: OptionType;
   options: OptionType[];
   isDisabled?: boolean;
+  onChange?: (newValue: OptionType) => void;
 };
 
 type MultiSelectProps = {
@@ -28,20 +29,28 @@ type MultiSelectProps = {
   selected?: OptionType[];
   options: OptionType[];
   isDisabled?: boolean;
+  onChange?: (newValue: OptionType[]) => void;
 };
 
 type Props = SelectProps | MultiSelectProps;
 
 export const Select = forwardRef<HTMLDivElement, Props>(
   (
-    { defaultValue, isMulti = false, name = "", options, isDisabled = false },
+    {
+      defaultValue,
+      isMulti = false,
+      name = "",
+      options,
+      isDisabled = false,
+      onChange,
+    },
     ref
   ) => {
     const inputRef = createRef<HTMLInputElement>();
     const menuRef = createRef<HTMLDivElement>();
     const [inputValue, setInputValue] = useState("");
     const [optionsValue, setOptionsValue] = useState(options);
-    const [selected, setSelected] = useState<any | undefined>(defaultValue);
+    const [selected, setSelected] = useState(defaultValue);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
@@ -116,15 +125,27 @@ export const Select = forwardRef<HTMLDivElement, Props>(
       (data: OptionType) => {
         if (isDisabled) return;
 
+        let newValue: OptionType | OptionType[] | undefined;
+
         if (isMulti) {
-          if (!selected) {
-            setSelected([data]);
+          if (selected !== undefined) {
+            newValue = [...(selected as OptionType[]), data];
           } else {
-            setSelected([...selected, data]);
+            newValue = [data];
           }
         } else {
-          setSelected(data);
+          newValue = data;
         }
+
+        if (onChange) {
+          if (isMulti) {
+            onChange(newValue as OptionType[]);
+          } else {
+            onChange(newValue as OptionType);
+          }
+        }
+
+        setSelected(newValue);
 
         if (menuIsOpen) {
           setMenuIsOpen(false);
@@ -199,7 +220,7 @@ export const Select = forwardRef<HTMLDivElement, Props>(
     // Pressing backspace while isMulti is true and focusing on <input /> pops selected.
     // =================================================================================
     const onPopValue = useCallback(() => {
-      const newValue = selected.slice(0, -1);
+      const newValue = selected?.slice(0, -1);
       setSelected(newValue.length === 0 ? undefined : newValue);
     }, [selected]);
 
@@ -225,8 +246,10 @@ export const Select = forwardRef<HTMLDivElement, Props>(
               type="text"
               value={inputValue}
               disabled={isDisabled}
-              placeholder={selected ? selected.label : "select..."}
-              selected={selected}
+              placeholder={selected !== undefined ? "" : "select..."}
+              selected={
+                selected !== undefined ? (selected as OptionType[]) : undefined
+              }
               onFocus={onFocusInput}
               onBlur={onBlurInput}
               onChange={onChangeInputValue}
@@ -243,8 +266,14 @@ export const Select = forwardRef<HTMLDivElement, Props>(
               type="text"
               value={inputValue}
               disabled={isDisabled}
-              placeholder={selected ? selected.label : "select..."}
-              selected={selected}
+              placeholder={
+                selected !== undefined
+                  ? (selected as OptionType).label
+                  : "select..."
+              }
+              selected={
+                selected !== undefined ? (selected as OptionType) : undefined
+              }
               onFocus={onFocusInput}
               onBlur={onBlurInput}
               onChange={onChangeInputValue}

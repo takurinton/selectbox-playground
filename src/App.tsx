@@ -51,13 +51,22 @@ function App() {
           <Typography component="h2" size="xxxl" weight="bold">
             single
           </Typography>
-          <Select name="colors" options={singleSelectOptions} />
+          <Select
+            name="colors"
+            options={singleSelectOptions}
+            defaultValue={singleSelectOptions[1]}
+          />
         </Flex>
         <Flex height="40vh">
           <Typography component="h2" size="xxxl" weight="bold">
             multiple
           </Typography>
-          <Select name="colors" isMulti options={multiSelectOptions} />
+          <Select
+            name="colors"
+            isMulti
+            options={multiSelectOptions}
+            defaultValue={[multiSelectOptions[0], multiSelectOptions[1]]}
+          />
         </Flex>
       </Flex>
     </ThemeContext.Provider>
