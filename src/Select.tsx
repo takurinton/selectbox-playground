@@ -14,13 +14,25 @@ import { OptionType } from "./types";
 
 type SelectProps = {
   defaultValue?: OptionType | OptionType[];
-  isMulti?: boolean;
+  isMulti?: false;
   name?: string;
+  selected: OptionType;
   options: OptionType[];
   isDisabled?: boolean;
 };
 
-export const Select = forwardRef<HTMLDivElement, SelectProps>(
+type MultiSelectProps = {
+  defaultValue?: OptionType[];
+  isMulti: true;
+  name?: string;
+  selected: OptionType[];
+  options: OptionType[];
+  isDisabled?: boolean;
+};
+
+type Props = SelectProps | MultiSelectProps;
+
+export const Select = forwardRef<HTMLDivElement, Props>(
   (
     { defaultValue, isMulti = false, name = "", options, isDisabled = false },
     ref
