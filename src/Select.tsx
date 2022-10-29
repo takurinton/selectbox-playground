@@ -30,7 +30,7 @@ type SingleClearableProps = BaseProps &
     isClearable: true;
     defaultValue?: OptionType | null;
     // selected?: OptionType | null;
-    onChange?: (value: OptionType | null) => void;
+    onChange: (value: OptionType | null) => void;
   };
 
 type SingleNotClearableProps = BaseProps &
@@ -38,7 +38,7 @@ type SingleNotClearableProps = BaseProps &
     isClearable?: false;
     defaultValue?: OptionType;
     // selected: OptionType;
-    onChange?: (value: OptionType) => void;
+    onChange: (value: OptionType) => void;
   };
 
 type MultipleClearableProps = BaseProps &
@@ -46,7 +46,7 @@ type MultipleClearableProps = BaseProps &
     isClearable: true;
     defaultValue: OptionType[] | null;
     // selected?: OptionType[] | null;
-    onChange?: (value: OptionType[] | null) => void;
+    onChange: (value: OptionType[] | null) => void;
   };
 
 type MultipleNotClearableProps = BaseProps &
@@ -54,7 +54,7 @@ type MultipleNotClearableProps = BaseProps &
     isClearable?: false;
     defaultValue?: OptionType[];
     // selected: OptionType[];
-    onChange?: (value: OptionType[]) => void;
+    onChange: (value: OptionType[]) => void;
   };
 
 export type SelectProps =
@@ -188,7 +188,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
           onBlurInput={onBlurInput}
           onFocusInput={onFocusInput}
           onClearInput={handleClearInput}
-          onChangeValue={onChange}
+          // TODO: Add type definition that takes `isClearable`
+          onChangeValue={onChange as any}
         />
       );
     }
@@ -210,7 +211,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
         onBlurInput={onBlurInput}
         onFocusInput={onFocusInput}
         onClearInput={handleClearInput}
-        onChangeValue={onChange}
+        // TODO: Add type definition that takes `isClearable`
+        onChangeValue={onChange as any}
       />
     );
   }

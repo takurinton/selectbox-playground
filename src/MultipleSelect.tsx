@@ -20,10 +20,10 @@ type Props = {
   menuIsOpen: boolean;
   inputValue: string;
   optionsValue: OptionType[] | null;
-  onFocusInput?: () => void;
+  onFocusInput: () => void;
   onBlurInput: () => void;
   onChangeInputValue?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeValue?: (value: OptionType[] | null) => void;
+  onChangeValue: (value: OptionType[] | null) => void;
   onClickOption: () => void;
   onMouseDownOption: (
     event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
