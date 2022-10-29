@@ -1,6 +1,5 @@
 import { Icon } from "ingred-ui";
 import { forwardRef, InputHTMLAttributes } from "react";
-import styled from "styled-components";
 import { OptionType } from "../../../types";
 import {
   DropdownIndicator,
