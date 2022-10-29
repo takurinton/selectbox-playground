@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import { MultipleInput } from "./utils/Input/MultipleInput/MultipleInput";
-import { Menu } from "./utils/Menu/Menu";
+import { MultipleMenu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 
 type Props = {
@@ -142,8 +142,7 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
             onPopValue={onPopValue}
             handleRemoveValue={handleRemoveValue}
           />
-          <Menu
-            isMulti
+          <MultipleMenu
             ref={menuRef}
             selected={selected}
             options={options}

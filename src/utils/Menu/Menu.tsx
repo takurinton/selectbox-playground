@@ -16,59 +16,56 @@ type MenuBase = {
 };
 
 type SingleMenuProps = MenuBase & {
-  isMulti: false;
   selected: OptionType | null;
 };
 
 type MultiMenuProps = MenuBase & {
-  isMulti: true;
   selected: OptionType[] | null;
 };
 
-type MenuProps = SingleMenuProps | MultiMenuProps;
+// type MenuProps = SingleMenuProps | MultiMenuProps;
 
-export const Menu = forwardRef<HTMLDivElement, MenuProps>(
-  (
-    {
-      options,
-      isMulti,
-      selected,
-      menuIsOpen,
-      optionsValue,
-      onClickOption,
-      onMouseDownOption,
-    },
-    ref
-  ) => {
-    if (isMulti) {
-      return (
-        <MultipleMenu
-          ref={ref}
-          isMulti
-          options={options}
-          selected={selected}
-          menuIsOpen={menuIsOpen}
-          optionsValue={optionsValue}
-          onClickOption={onClickOption}
-          onMouseDownOption={onMouseDownOption}
-        />
-      );
-    }
-
-    return (
-      <SingleMenu
-        ref={ref}
-        isMulti={false}
-        options={options}
-        selected={selected}
-        menuIsOpen={menuIsOpen}
-        optionsValue={optionsValue}
-        onClickOption={onClickOption}
-        onMouseDownOption={onMouseDownOption}
-      />
-    );
-  }
-);
+// export const Menu = forwardRef<HTMLDivElement, MenuProps>(
+//   (
+//     {
+//       options,
+//       isMulti,
+//       selected,
+//       menuIsOpen,
+//       optionsValue,
+//       onClickOption,
+//       onMouseDownOption,
+//     },
+//     ref
+//   ) => {
+//     if (isMulti) {
+//       return (
+//         <MultipleMenu
+//           ref={ref}
+//           isMulti
+//           options={options}
+//           selected={selected}
+//           menuIsOpen={menuIsOpen}
+//           optionsValue={optionsValue}
+//           onClickOption={onClickOption}
+//           onMouseDownOption={onMouseDownOption}
+//         />
+//       );
+//     }
+//     return (
+//       <SingleMenu
+//         ref={ref}
+//         isMulti={false}
+//         options={options}
+//         selected={selected}
+//         menuIsOpen={menuIsOpen}
+//         optionsValue={optionsValue}
+//         onClickOption={onClickOption}
+//         onMouseDownOption={onMouseDownOption}
+//       />
+//     );
+//   }
+// );
 
 export const SingleMenu = forwardRef<HTMLDivElement, SingleMenuProps>(
   (

@@ -9,7 +9,7 @@ import React, {
   useState,
 } from "react";
 import { Input } from "./utils/Input/Input/Input";
-import { Menu } from "./utils/Menu/Menu";
+import { SingleMenu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 
 type Props = {
@@ -121,11 +121,10 @@ export const SingleSelect = forwardRef<HTMLDivElement, Props>(
             onChange={onChangeInputValue}
             onClearValue={handleClearValue}
           />
-          <Menu
+          <SingleMenu
             ref={menuRef}
             selected={selected}
             options={options}
-            isMulti={false}
             optionsValue={optionsValue ?? []}
             menuIsOpen={menuIsOpen}
             onClickOption={handleClickOption}
