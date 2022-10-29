@@ -12,7 +12,7 @@ const OptionStyled = styled.div<{ selected: boolean }>`
 `;
 
 type OptionProps = OptionType & {
-  selected: boolean;
+  selected?: boolean;
   onClickOption: (data: OptionType) => void;
 };
 
@@ -21,7 +21,7 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(
     return (
       <OptionStyled
         ref={ref}
-        selected={selected}
+        selected={selected ?? false}
         onClick={() => {
           onClickOption({ label, value });
         }}
