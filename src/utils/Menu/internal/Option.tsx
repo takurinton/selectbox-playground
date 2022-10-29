@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import styled from "styled-components";
-import { OptionType } from "./types";
+import { OptionType } from "../../../types";
 
 const OptionStyled = styled.div<{ selected: boolean }>`
   background: ${({ selected, theme }) =>

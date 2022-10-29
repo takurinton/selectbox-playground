@@ -1,31 +1,14 @@
-import { Flex, Typography, useTheme } from "ingred-ui";
+import { Flex } from "ingred-ui";
 import { forwardRef, MouseEvent } from "react";
 import styled from "styled-components";
-import { Option } from "./Option";
-import { OptionType } from "./types";
+import { Option } from "./internal/Option";
+import { OptionType } from "../../types";
+import { EmptyOptions } from "./internal/EmptyOptions";
+import { MenuContainer } from "./styled";
 
-const MenuContainer = styled.div`
-  padding: ${({ theme }) => `${theme.spacing / 2}px 0`};
-  border-radius: ${({ theme }) => `0 0 ${theme.radius}px ${theme.radius}px`};
-  border: ${({ theme }) => `1px solid ${theme.palette.gray.main}`};
-  border-top: none;
-`;
-
-const EmptyOptions = () => {
-  const theme = useTheme();
-  return (
-    <Flex height="64px">
-      <Typography color={theme.palette.gray.main} align="center">
-        Not found
-      </Typography>
-    </Flex>
-  );
-};
-
-type MenuProps = {
+type MenuBase = {
   selected: any | undefined;
   menuIsOpen: boolean;
-  isMulti: boolean;
   options: OptionType[];
   optionsValue: OptionType[];
   onClickOption: (data: OptionType) => void;
@@ -33,6 +16,16 @@ type MenuProps = {
     event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
   ) => void;
 };
+
+type IsMultiMenuProps = MenuBase & {
+  isMulti?: true;
+};
+
+type IsSingleMenuProps = MenuBase & {
+  isMulti?: false;
+};
+
+type MenuProps = IsMultiMenuProps | IsSingleMenuProps;
 
 export const Menu = forwardRef<HTMLDivElement, MenuProps>(
   (
@@ -48,7 +41,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
     ref
   ) => {
     const getMenuList = () => {
-      if (selected === undefined || !isMulti) {
+      if (selected == null || !isMulti) {
         return optionsValue.map(({ value, label }, index) => (
           <Option
             key={`${value}-${label}-${index}`}

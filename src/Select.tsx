@@ -8,8 +8,8 @@ import {
   useCallback,
   useState,
 } from "react";
-import { Input, MultipleInput } from "./Input";
-import { Menu } from "./Menu";
+import { Input } from "./Input";
+import { Menu } from "./utils/Menu/Menu";
 import { MultipleSelect } from "./MultipleSelect";
 import { OptionType } from "./types";
 
@@ -231,11 +231,6 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       []
     );
 
-    const handleChangeSelected = (data: OptionType[] | null) => {
-      onChange && onChange(data);
-      setSelected(data);
-    };
-
     if (isMulti) {
       return (
         <MultipleSelect
@@ -254,7 +249,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
           onBlurInput={onBlurInput}
           onFocusInput={onFocusInput}
           onClearInput={handleClearInput}
-          onChangeSelected={handleChangeSelected}
+          onChangeValue={onChange}
         />
       );
     }
