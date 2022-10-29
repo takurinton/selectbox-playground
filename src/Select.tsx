@@ -78,10 +78,8 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     ref
   ) => {
     const inputRef = createRef<HTMLInputElement>();
-    const menuRef = createRef<HTMLDivElement>();
     const [inputValue, setInputValue] = useState("");
     const [optionsValue, setOptionsValue] = useState(options);
-    const [selected, setSelected] = useState<any | undefined>(defaultValue);
     const [menuIsOpen, setMenuIsOpen] = useState(false);
     const [isFocused, setIsFocused] = useState(false);
 
@@ -170,34 +168,6 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
         }
       },
       [isFocused, menuIsOpen]
-    );
-
-    // ==============================
-    // Click button to clear all
-    // ==============================
-    const onClearValue = useCallback(
-      (
-        event:
-          | React.MouseEvent<HTMLDivElement>
-          | React.TouchEvent<HTMLDivElement>
-      ) => {
-        if (
-          event &&
-          event.type === "mousedown" &&
-          (event as React.MouseEvent<HTMLDivElement>).button !== 0
-        ) {
-          return;
-        }
-
-        setSelected(undefined);
-        event.preventDefault();
-        if (event.type === "touchend") {
-          onFocusInput();
-        } else {
-          setTimeout(() => onFocusInput());
-        }
-      },
-      []
     );
 
     if (isMulti) {
