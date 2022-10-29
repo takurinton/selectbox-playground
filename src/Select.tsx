@@ -19,36 +19,42 @@ type BaseProps = {
 };
 
 type SingleBaseProps = BaseProps & {
-  defaultValue?: OptionType;
   isMulti?: false;
 };
 
 type MultipleBaseProps = BaseProps & {
-  defaultValue?: OptionType[];
   isMulti?: true;
 };
 
 type SingleClearableProps = BaseProps &
   SingleBaseProps & {
+    defaultValue?: OptionType | null;
     isClearable: true;
+    // selected?: OptionType | null;
     onChange?: (value: OptionType | null) => void;
   };
 
 type SingleNotClearableProps = BaseProps &
   SingleBaseProps & {
+    defaultValue?: OptionType;
     isClearable: false;
+    // selected: OptionType;
     onChange?: (value: OptionType) => void;
   };
 
 type MultipleClearableProps = BaseProps &
   MultipleBaseProps & {
+    defaultValue: OptionType[] | null;
     isClearable: true;
+    // selected?: OptionType[] | null;
     onChange?: (value: OptionType[] | null) => void;
   };
 
 type MultipleNotClearableProps = BaseProps &
   MultipleBaseProps & {
+    defaultValue?: OptionType[];
     isClearable: false;
+    // selected: OptionType[];
     onChange?: (value: OptionType[]) => void;
   };
 
@@ -60,7 +66,15 @@ export type SelectProps =
 
 export const Select = forwardRef<HTMLDivElement, SelectProps>(
   (
-    { defaultValue, isMulti = false, name = "", options, isDisabled = false },
+    {
+      defaultValue,
+      isMulti = false,
+      name = "",
+      options,
+      isClearable = false,
+      isDisabled = false,
+      ...rest
+    },
     ref
   ) => {
     const inputRef = createRef<HTMLInputElement>();

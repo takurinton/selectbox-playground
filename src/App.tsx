@@ -21,7 +21,7 @@ function App() {
     },
   ];
 
-  const multiSelectOptions = [
+  const multiSelectOptions: OptionType[] = [
     {
       label: "red",
       value: "red",
@@ -36,8 +36,8 @@ function App() {
     },
   ];
 
-  const setSingleSelected = useState<OptionType | null>(null)[1];
-  const setMultiSelected = useState<OptionType[] | null>([])[1];
+  const [singleSelected, setSingleSelected] = useState<OptionType | null>(null);
+  const [multiSelected, setMultiSelected] = useState<OptionType[] | null>([]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -48,8 +48,8 @@ function App() {
           </Typography>
           <Select
             name="colors"
+            isClearable
             options={singleSelectOptions}
-            isClearable={true}
             onChange={setSingleSelected}
           />
         </Flex>
@@ -60,7 +60,8 @@ function App() {
           <Select
             name="colors"
             isMulti
-            isClearable={true}
+            isClearable
+            defaultValue={multiSelected}
             options={multiSelectOptions}
             onChange={setMultiSelected}
           />
