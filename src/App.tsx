@@ -1,18 +1,10 @@
-import { createTheme, Flex, Tabs, Typography } from "ingred-ui";
+import { createTheme, Flex, ThemeProvider, Typography } from "ingred-ui";
 import { useState } from "react";
-import { ThemeContext } from "styled-components";
 import { Select } from "./Select";
+import { OptionType } from "./types";
 
 function App() {
   const theme = createTheme();
-
-  const [value, setValue] = useState("multi");
-  const tabsOptions = {
-    data: [
-      { text: "single", value: "single" },
-      { text: "multi", value: "multi" },
-    ],
-  };
 
   const singleSelectOptions = [
     {
@@ -44,23 +36,37 @@ function App() {
     },
   ];
 
+  const setSingleSelected = useState<OptionType | null>(null)[1];
+  const setMultiSelected = useState<OptionType[] | null>([])[1];
+
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeProvider theme={theme}>
       <Flex>
         <Flex height="40vh">
           <Typography component="h2" size="xxxl" weight="bold">
             single
           </Typography>
-          <Select name="colors" options={singleSelectOptions} />
+          <Select
+            name="colors"
+            options={singleSelectOptions}
+            isClearable={true}
+            onChange={setSingleSelected}
+          />
         </Flex>
         <Flex height="40vh">
           <Typography component="h2" size="xxxl" weight="bold">
             multiple
           </Typography>
-          <Select name="colors" isMulti options={multiSelectOptions} />
+          <Select
+            name="colors"
+            isMulti
+            isClearable={true}
+            options={multiSelectOptions}
+            onChange={setMultiSelected}
+          />
         </Flex>
       </Flex>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
 

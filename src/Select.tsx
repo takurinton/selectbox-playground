@@ -12,13 +12,51 @@ import { Input, MultipleInput } from "./Input";
 import { Menu } from "./Menu";
 import { OptionType } from "./types";
 
-type SelectProps = {
-  defaultValue?: OptionType | OptionType[];
-  isMulti?: boolean;
+type BaseProps = {
   name?: string;
   options: OptionType[];
   isDisabled?: boolean;
 };
+
+type SingleBaseProps = BaseProps & {
+  defaultValue?: OptionType;
+  isMulti?: false;
+};
+
+type MultipleBaseProps = BaseProps & {
+  defaultValue?: OptionType[];
+  isMulti?: true;
+};
+
+type SingleClearableProps = BaseProps &
+  SingleBaseProps & {
+    isClearable: true;
+    onChange?: (value: OptionType | null) => void;
+  };
+
+type SingleNotClearableProps = BaseProps &
+  SingleBaseProps & {
+    isClearable: false;
+    onChange?: (value: OptionType) => void;
+  };
+
+type MultipleClearableProps = BaseProps &
+  MultipleBaseProps & {
+    isClearable: true;
+    onChange?: (value: OptionType[] | null) => void;
+  };
+
+type MultipleNotClearableProps = BaseProps &
+  MultipleBaseProps & {
+    isClearable: false;
+    onChange?: (value: OptionType[]) => void;
+  };
+
+export type SelectProps =
+  | SingleClearableProps
+  | SingleNotClearableProps
+  | MultipleClearableProps
+  | MultipleNotClearableProps;
 
 export const Select = forwardRef<HTMLDivElement, SelectProps>(
   (
