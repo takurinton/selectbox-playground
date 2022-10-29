@@ -7,9 +7,8 @@ import { EmptyOptions } from "./internal/EmptyOptions";
 import { MenuContainer } from "./styled";
 
 type MenuBase = {
-  selected: any | undefined;
-  menuIsOpen: boolean;
   options: OptionType[];
+  menuIsOpen: boolean;
   optionsValue: OptionType[];
   onClickOption: (data: OptionType) => void;
   onMouseDownOption: (
@@ -19,10 +18,12 @@ type MenuBase = {
 
 type IsMultiMenuProps = MenuBase & {
   isMulti?: true;
+  selected: OptionType[] | null;
 };
 
 type IsSingleMenuProps = MenuBase & {
   isMulti?: false;
+  selected: OptionType | null;
 };
 
 type MenuProps = IsMultiMenuProps | IsSingleMenuProps;
@@ -53,7 +54,7 @@ export const Menu = forwardRef<HTMLDivElement, MenuProps>(
         ));
       }
 
-      if (selected.length === options.length) {
+      if (selected?.length === options?.length) {
         return <EmptyOptions />;
       }
 

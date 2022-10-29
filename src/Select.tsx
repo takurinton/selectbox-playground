@@ -12,6 +12,7 @@ import { Input } from "./Input";
 import { Menu } from "./utils/Menu/Menu";
 import { MultipleSelect } from "./MultipleSelect";
 import { OptionType } from "./types";
+import { SingleSelect } from "./SingleSelect";
 
 type BaseProps = {
   name?: string;
@@ -146,35 +147,6 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     );
 
     // ==============================
-    // Click option
-    // ==============================
-    const onClickOption = useCallback(
-      (data: OptionType) => {
-        if (isDisabled) return;
-
-        if (isMulti) {
-          if (!selected) {
-            setSelected([data]);
-          } else {
-            setSelected([...selected, data]);
-          }
-        } else {
-          setSelected(data);
-        }
-
-        if (menuIsOpen) {
-          setMenuIsOpen(false);
-        }
-
-        onFocusInput();
-        handleClearInput();
-        setIsFocused(true);
-        setOptionsValue(options);
-      },
-      [selected, menuIsOpen]
-    );
-
-    // ==============================
     // Click select container
     // ==============================
     const onClickSelectContainer = useCallback(
@@ -255,35 +227,24 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     }
 
     return (
-      <Flex ref={ref}>
-        <Flex onClick={onClickSelectContainer}>
-          <Input
-            ref={inputRef}
-            name={name}
-            readOnly={!menuIsOpen}
-            menuIsOpen={menuIsOpen}
-            type="text"
-            value={inputValue}
-            disabled={isDisabled}
-            placeholder={selected ? selected.label : "select..."}
-            selected={selected}
-            onFocus={onFocusInput}
-            onBlur={onBlurInput}
-            onChange={onChangeInputValue}
-            onClearValue={onClearValue}
-          />
-          <Menu
-            ref={menuRef}
-            selected={selected}
-            isMulti={isMulti}
-            options={options}
-            optionsValue={optionsValue}
-            menuIsOpen={menuIsOpen}
-            onClickOption={onClickOption}
-            onMouseDownOption={onMouseDownOption}
-          />
-        </Flex>
-      </Flex>
+      <SingleSelect
+        {...rest}
+        ref={ref}
+        isDisabled={isDisabled}
+        isClearable={isClearable}
+        menuIsOpen={menuIsOpen}
+        inputValue={inputValue}
+        options={options}
+        optionsValue={optionsValue}
+        onClickSelectContainer={onClickSelectContainer}
+        onChangeInputValue={onChangeInputValue}
+        onClickOption={handleClickOption}
+        onMouseDownOption={onMouseDownOption}
+        onBlurInput={onBlurInput}
+        onFocusInput={onFocusInput}
+        onClearInput={handleClearInput}
+        onChangeValue={onChange}
+      />
     );
   }
 );

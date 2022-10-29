@@ -111,7 +111,7 @@ const MultiSelected = forwardRef<HTMLDivElement, MultiSelectedProps>(
 );
 
 type InputProps<T> = {
-  selected: OptionType[] | undefined;
+  selected: OptionType | null;
   menuIsOpen: boolean;
   onClearValue: (
     event: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>
