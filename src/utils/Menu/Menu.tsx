@@ -1,6 +1,5 @@
 import { Flex } from "ingred-ui";
 import { forwardRef, MouseEvent } from "react";
-import styled from "styled-components";
 import { Option } from "./internal/Option";
 import { OptionType } from "../../types";
 import { EmptyOptions } from "./internal/EmptyOptions";

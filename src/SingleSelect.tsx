@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useState,
 } from "react";
-import { Input } from "./Input";
+import { Input } from "./utils/Input/Input/Input";
 import { Menu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 

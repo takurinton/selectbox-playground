@@ -8,7 +8,7 @@ import React, {
   useCallback,
   useState,
 } from "react";
-import { MultipleInput } from "./Input";
+import { MultipleInput } from "./utils/Input/MultipleInput/MultipleInput";
 import { Menu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 

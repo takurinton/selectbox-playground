@@ -1,4 +1,3 @@
-import { Flex } from "ingred-ui";
 import {
   ChangeEvent,
   createRef,
@@ -8,8 +7,6 @@ import {
   useCallback,
   useState,
 } from "react";
-import { Input } from "./Input";
-import { Menu } from "./utils/Menu/Menu";
 import { MultipleSelect } from "./MultipleSelect";
 import { OptionType } from "./types";
 import { SingleSelect } from "./SingleSelect";
