@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import styled from "styled-components";
-import { OptionType } from "./types";
+import { OptionType } from "../../../types";
 
 const OptionStyled = styled.div<{ selected: boolean }>`
   background: ${({ selected, theme }) =>
@@ -12,7 +12,7 @@ const OptionStyled = styled.div<{ selected: boolean }>`
 `;
 
 type OptionProps = OptionType & {
-  selected: boolean;
+  selected?: boolean;
   onClickOption: (data: OptionType) => void;
 };
 
@@ -21,7 +21,7 @@ export const Option = forwardRef<HTMLDivElement, OptionProps>(
     return (
       <OptionStyled
         ref={ref}
-        selected={selected}
+        selected={selected ?? false}
         onClick={() => {
           onClickOption({ label, value });
         }}

@@ -1,18 +1,10 @@
-import { createTheme, Flex, Tabs, Typography } from "ingred-ui";
-import { useState } from "react";
-import { ThemeContext } from "styled-components";
+import { createTheme, Flex, ThemeProvider, Typography } from "ingred-ui";
+import { useEffect, useState } from "react";
 import { Select } from "./Select";
+import { OptionType } from "./types";
 
 function App() {
   const theme = createTheme();
-
-  const [value, setValue] = useState("multi");
-  const tabsOptions = {
-    data: [
-      { text: "single", value: "single" },
-      { text: "multi", value: "multi" },
-    ],
-  };
 
   const singleSelectOptions = [
     {
@@ -29,7 +21,7 @@ function App() {
     },
   ];
 
-  const multiSelectOptions = [
+  const multiSelectOptions: OptionType[] = [
     {
       label: "red",
       value: "red",
@@ -44,23 +36,47 @@ function App() {
     },
   ];
 
+  const [singleSelected, setSingleSelected] = useState<OptionType | null>(null);
+  const [multiSelected, setMultiSelected] = useState<OptionType[] | null>([]);
+
+  useEffect(() => {
+    console.log("singleSelected", singleSelected);
+  }, [singleSelected]);
+
+  useEffect(() => {
+    console.log("multiSelected", multiSelected);
+  }, [multiSelected]);
+
   return (
-    <ThemeContext.Provider value={theme}>
+    <ThemeProvider theme={theme}>
       <Flex>
         <Flex height="40vh">
           <Typography component="h2" size="xxxl" weight="bold">
             single
           </Typography>
-          <Select name="colors" options={singleSelectOptions} />
+          <Select
+            name="colors"
+            isClearable
+            defaultValue={singleSelected}
+            options={singleSelectOptions}
+            onChange={setSingleSelected}
+          />
         </Flex>
         <Flex height="40vh">
           <Typography component="h2" size="xxxl" weight="bold">
             multiple
           </Typography>
-          <Select name="colors" isMulti options={multiSelectOptions} />
+          <Select
+            name="colors"
+            isMulti
+            isClearable
+            defaultValue={multiSelected}
+            options={multiSelectOptions}
+            onChange={setMultiSelected}
+          />
         </Flex>
       </Flex>
-    </ThemeContext.Provider>
+    </ThemeProvider>
   );
 }
 
