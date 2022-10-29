@@ -1,5 +1,5 @@
 import { createTheme, Flex, ThemeProvider, Typography } from "ingred-ui";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Select } from "./Select";
 import { OptionType } from "./types";
 
@@ -39,6 +39,14 @@ function App() {
   const [singleSelected, setSingleSelected] = useState<OptionType | null>(null);
   const [multiSelected, setMultiSelected] = useState<OptionType[] | null>([]);
 
+  useEffect(() => {
+    console.log("singleSelected", singleSelected);
+  }, [singleSelected]);
+
+  useEffect(() => {
+    console.log("multiSelected", multiSelected);
+  }, [multiSelected]);
+
   return (
     <ThemeProvider theme={theme}>
       <Flex>
@@ -49,6 +57,7 @@ function App() {
           <Select
             name="colors"
             isClearable
+            defaultValue={singleSelected}
             options={singleSelectOptions}
             onChange={setSingleSelected}
           />

@@ -145,7 +145,7 @@ export const Input = forwardRef<HTMLDivElement, InputProps<any>>(
 );
 
 type MultipleInputProps<T> = {
-  selected: OptionType[] | undefined;
+  selected: OptionType[] | null;
   menuIsOpen: boolean;
   handleRemoveValue: (
     event: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>,
@@ -187,6 +187,7 @@ export const MultipleInput = forwardRef<
         if (
           rest.value === "" &&
           selected !== undefined &&
+          selected !== null &&
           selected.length !== 0
         ) {
           if (event.key === "Backspace") {
@@ -207,7 +208,7 @@ export const MultipleInput = forwardRef<
         />
         <IconContainer>
           <IconButton>
-            {selected ? (
+            {selected !== null ? (
               <div onClick={onClearValue}>
                 <Icon name="close_circle" size="md" color="black" />
               </div>

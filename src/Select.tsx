@@ -10,6 +10,7 @@ import {
 } from "react";
 import { Input, MultipleInput } from "./Input";
 import { Menu } from "./Menu";
+import { MultipleSelect } from "./MultipleSelect";
 import { OptionType } from "./types";
 
 type BaseProps = {
@@ -23,37 +24,37 @@ type SingleBaseProps = BaseProps & {
 };
 
 type MultipleBaseProps = BaseProps & {
-  isMulti?: true;
+  isMulti: true;
 };
 
 type SingleClearableProps = BaseProps &
   SingleBaseProps & {
-    defaultValue?: OptionType | null;
     isClearable: true;
+    defaultValue?: OptionType | null;
     // selected?: OptionType | null;
     onChange?: (value: OptionType | null) => void;
   };
 
 type SingleNotClearableProps = BaseProps &
   SingleBaseProps & {
+    isClearable?: false;
     defaultValue?: OptionType;
-    isClearable: false;
     // selected: OptionType;
     onChange?: (value: OptionType) => void;
   };
 
 type MultipleClearableProps = BaseProps &
   MultipleBaseProps & {
-    defaultValue: OptionType[] | null;
     isClearable: true;
+    defaultValue: OptionType[] | null;
     // selected?: OptionType[] | null;
     onChange?: (value: OptionType[] | null) => void;
   };
 
 type MultipleNotClearableProps = BaseProps &
   MultipleBaseProps & {
+    isClearable?: false;
     defaultValue?: OptionType[];
-    isClearable: false;
     // selected: OptionType[];
     onChange?: (value: OptionType[]) => void;
   };
@@ -69,10 +70,11 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
     {
       defaultValue,
       isMulti = false,
-      name = "",
-      options,
       isClearable = false,
       isDisabled = false,
+      name = "",
+      options,
+      onChange,
       ...rest
     },
     ref
@@ -92,23 +94,17 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       setInputValue("");
     }, []);
 
-    // ==============================
-    // When isMulti is true, the selected element is cleared
-    // ==============================
-    const handleRemoveValue = useCallback(
-      (
-        event: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>,
-        value: string | number
-      ) => {
-        event.preventDefault();
-        const newValue = selected.filter((s: OptionType) => s.value !== value);
-        setSelected(newValue.length === 0 ? undefined : newValue);
-      },
-      [selected]
-    );
+    const handleClickOption = () => {
+      if (menuIsOpen) {
+        setMenuIsOpen(false);
+      }
+
+      setIsFocused(true);
+      setOptionsValue(options);
+    };
 
     // ==============================
-    // DOM Event Listners
+    // DOM Event Handler
     // ==============================
     const onFocusInput = useCallback(() => {
       if (!inputRef) return;
@@ -235,62 +231,52 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
       []
     );
 
-    // =================================================================================
-    // Pressing backspace while isMulti is true and focusing on <input /> pops selected.
-    // =================================================================================
-    const onPopValue = useCallback(() => {
-      const newValue = selected.slice(0, -1);
-      setSelected(newValue.length === 0 ? undefined : newValue);
-    }, [selected]);
+    const handleChangeSelected = (data: OptionType[] | null) => {
+      onChange && onChange(data);
+      setSelected(data);
+    };
+
+    if (isMulti) {
+      return (
+        <MultipleSelect
+          {...rest}
+          ref={ref}
+          isDisabled={isDisabled}
+          isClearable={isClearable}
+          menuIsOpen={menuIsOpen}
+          inputValue={inputValue}
+          options={options}
+          optionsValue={optionsValue}
+          onClickSelectContainer={onClickSelectContainer}
+          onChangeInputValue={onChangeInputValue}
+          onClickOption={handleClickOption}
+          onMouseDownOption={onMouseDownOption}
+          onBlurInput={onBlurInput}
+          onFocusInput={onFocusInput}
+          onClearInput={handleClearInput}
+          onChangeSelected={handleChangeSelected}
+        />
+      );
+    }
 
     return (
       <Flex ref={ref}>
         <Flex onClick={onClickSelectContainer}>
-          {/* 
-            TODO: この階層で渡してる props は全てユーザーにも提供する。
-
-            e.g.
-            const onChange = useCallback((event) => {
-              if(props.onChange) {
-                props.onChange(event);
-              }
-              // 処理
-            }, [props.onChange, selected])
-          */}
-          {isMulti ? (
-            <MultipleInput
-              ref={inputRef}
-              readOnly={!menuIsOpen}
-              menuIsOpen={menuIsOpen}
-              type="text"
-              value={inputValue}
-              disabled={isDisabled}
-              placeholder={selected ? selected.label : "select..."}
-              selected={selected}
-              onFocus={onFocusInput}
-              onBlur={onBlurInput}
-              onChange={onChangeInputValue}
-              onClearValue={onClearValue}
-              onPopValue={onPopValue}
-              handleRemoveValue={handleRemoveValue}
-            />
-          ) : (
-            <Input
-              ref={inputRef}
-              name={name}
-              readOnly={!menuIsOpen}
-              menuIsOpen={menuIsOpen}
-              type="text"
-              value={inputValue}
-              disabled={isDisabled}
-              placeholder={selected ? selected.label : "select..."}
-              selected={selected}
-              onFocus={onFocusInput}
-              onBlur={onBlurInput}
-              onChange={onChangeInputValue}
-              onClearValue={onClearValue}
-            />
-          )}
+          <Input
+            ref={inputRef}
+            name={name}
+            readOnly={!menuIsOpen}
+            menuIsOpen={menuIsOpen}
+            type="text"
+            value={inputValue}
+            disabled={isDisabled}
+            placeholder={selected ? selected.label : "select..."}
+            selected={selected}
+            onFocus={onFocusInput}
+            onBlur={onBlurInput}
+            onChange={onChangeInputValue}
+            onClearValue={onClearValue}
+          />
           <Menu
             ref={menuRef}
             selected={selected}
