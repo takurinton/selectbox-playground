@@ -12,10 +12,9 @@ import { MultipleInput } from "./utils/Input/MultipleInput/MultipleInput";
 import { MultipleMenu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 
-type Props = {
+type MultipleSelectBase = {
   options: OptionType[];
   isDisabled?: boolean;
-  isClearable?: boolean;
   defaultValue?: OptionType[] | null;
   menuIsOpen: boolean;
   inputValue: string;
@@ -23,7 +22,6 @@ type Props = {
   onFocusInput: () => void;
   onBlurInput: () => void;
   onChangeInputValue?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeValue: (value: OptionType[] | null) => void;
   onClickOption: () => void;
   onMouseDownOption: (
     event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
@@ -31,9 +29,20 @@ type Props = {
   onClickSelectContainer: (
     event: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>
   ) => void;
-  onChangeSelected?: (value: OptionType[] | null) => void;
   onClearInput: () => void;
 };
+
+type MultipleClearableSelectProps = MultipleSelectBase & {
+  isClearable?: true;
+  onChangeValue: (value: OptionType[] | null) => void;
+};
+
+type MultipleNotClearableSelectProps = MultipleSelectBase & {
+  isClearable?: false;
+  onChangeValue: (value: OptionType[]) => void;
+};
+
+type Props = MultipleClearableSelectProps | MultipleNotClearableSelectProps;
 
 export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
   (
@@ -51,7 +60,6 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
       onClickOption,
       onMouseDownOption,
       onClickSelectContainer,
-      onChangeSelected,
       onChangeValue,
       ...rest
     },
@@ -66,7 +74,6 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
     const onPopValue = () => {
       const newValue = selected?.slice(0, -1) ?? null;
       setSelected(newValue);
-      onChangeSelected && onChangeSelected(newValue);
       onChangeValue && onChangeValue(newValue);
     };
 
@@ -78,7 +85,6 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
       const newValue =
         selected?.filter((s: OptionType) => s.value !== value) ?? null;
       setSelected(newValue);
-      onChangeSelected && onChangeSelected(newValue);
       onChangeValue && onChangeValue(newValue);
     };
 
@@ -88,7 +94,6 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
 
         const newValue = [...(selected ?? []), data];
         setSelected(newValue);
-        onChangeSelected && onChangeSelected(newValue);
         onChangeValue && onChangeValue(newValue);
         onFocusInput && onFocusInput();
 
@@ -110,7 +115,6 @@ export const MultipleSelect = forwardRef<HTMLDivElement, Props>(
       }
 
       setSelected([]);
-      onChangeSelected && onChangeSelected([]);
       onChangeValue && onChangeValue([]);
 
       event.preventDefault();

@@ -12,11 +12,10 @@ import { Input } from "./utils/Input/Input/Input";
 import { SingleMenu } from "./utils/Menu/Menu";
 import { OptionType } from "./types";
 
-type Props = {
+type SingleSelectBase = {
   name?: string;
   options: OptionType[];
   isDisabled?: boolean;
-  isClearable?: boolean;
   defaultValue?: OptionType | null;
   menuIsOpen: boolean;
   inputValue: string;
@@ -24,7 +23,6 @@ type Props = {
   onFocusInput?: () => void;
   onBlurInput: () => void;
   onChangeInputValue?: (event: ChangeEvent<HTMLInputElement>) => void;
-  onChangeValue?: (value: OptionType | null) => void;
   onClickOption: () => void;
   onMouseDownOption: (
     event: MouseEvent<HTMLDivElement, globalThis.MouseEvent>
@@ -32,9 +30,20 @@ type Props = {
   onClickSelectContainer: (
     event: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>
   ) => void;
-  onChangeSelected?: (value: OptionType | null) => void;
   onClearInput: () => void;
 };
+
+type SingleClearableSelectProps = SingleSelectBase & {
+  isClearable?: true;
+  onChangeValue?: (value: OptionType | null) => void;
+};
+
+type SingleNotClearableSelectProps = SingleSelectBase & {
+  isClearable?: false;
+  onChangeValue?: (value: OptionType) => void;
+};
+
+type Props = SingleClearableSelectProps | SingleNotClearableSelectProps;
 
 export const SingleSelect = forwardRef<HTMLDivElement, Props>(
   (
@@ -53,7 +62,6 @@ export const SingleSelect = forwardRef<HTMLDivElement, Props>(
       onClickOption,
       onMouseDownOption,
       onClickSelectContainer,
-      onChangeSelected,
       onChangeValue,
       ...rest
     },
@@ -70,7 +78,6 @@ export const SingleSelect = forwardRef<HTMLDivElement, Props>(
         if (isDisabled) return;
 
         setSelected(data);
-        onChangeSelected && onChangeSelected(data);
         onChangeValue && onChangeValue(data);
         onFocusInput && onFocusInput();
 
@@ -92,7 +99,6 @@ export const SingleSelect = forwardRef<HTMLDivElement, Props>(
       }
 
       setSelected(null);
-      onChangeSelected && onChangeSelected(null);
       onChangeValue && onChangeValue(null);
 
       event.preventDefault();
