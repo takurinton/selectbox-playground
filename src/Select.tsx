@@ -189,7 +189,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
           onFocusInput={onFocusInput}
           onClearInput={handleClearInput}
           // TODO: Add type definition that takes `isClearable`
-          onChangeValue={onChange as any}
+          onChangeValue={onChange}
         />
       );
     }
@@ -212,7 +212,7 @@ export const Select = forwardRef<HTMLDivElement, SelectProps>(
         onFocusInput={onFocusInput}
         onClearInput={handleClearInput}
         // TODO: Add type definition that takes `isClearable`
-        onChangeValue={onChange as any}
+        onChangeValue={onChange}
       />
     );
   }
